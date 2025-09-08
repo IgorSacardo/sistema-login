@@ -7,14 +7,12 @@
         $senha = trim($_POST['senha']);
 
         if (empty($email) || empty($senha)) {
-            die("Preencha todos os campos! <a href='index.html'>Tentar novamente</a>");
+            die("Erro: Preencha todos os campos! <a href='index.html'>Tentar novamente</a>");
         }
 
+
         try {
-            $buscar_dados = "SELECT usu_id, usu_nome, usu_email, usu_senha, usu_nivel_acesso
-            FROM usuarios
-            WHERE usu_email = :email
-            LIMIT 1";
+            $sql = "SELECT usu_id, usu_nome, usu_email, usu_senha, usu_nivel_acesso FROM usuarios WHERE usu_email = :email LIMIT 1";
 
             $stmt=$pdo->prepare($sql);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);

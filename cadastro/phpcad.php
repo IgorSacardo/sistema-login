@@ -3,14 +3,14 @@
     require_once "../conexao/conexao.php";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
         $nome = trim($_POST['nome']);
         $email = trim($_POST['email']);
-        $senha = $_POST['senha'];
-        $confirmar = $_POST['confirmar_senha'];
-        $nivel = $_POST['nivel'];
+        $senha = trim($_POST['senha']);
+        $confirmar = trim($_POST['confirmar_senha']);
+        $nivel = 'usuario';
+        // $nivel = $_POST['nivel'];
         
-        if ($senha !== $confirmar_senha) {
+        if ($senha != $confirmar) {
             die("As senhas não conferem! <a href='cadastro.html'>Tente novamente</a>.");
         }
 
@@ -22,21 +22,20 @@
             $stmt_verificar_email->execute(); 
             
             if ($stmt_verificar_email->rowCount() > 0) {
-                die("Este e-mail já está cadastrado! <a href='cadastro.html'>Tente outro</a>.");
+                die("E-mail já está cadastrado! <a href='cadastro.html'>Tente outro</a>.");
             }
 
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-            $inserir_dados = "INSERT INTO usuarios (usu_nome, usu_email, usu_senha, usu_nivel_acesso)
-                    VALUES (:nome, :email, :senha, :nivel)";
+            $inserir_dados = "INSERT INTO usuarios (usu_nome, usu_email, usu_senha, usu_nivel_acesso) VALUES (:nome, :email, :senha, :nivel)";
                     
             $stmt_inserir_dados = $pdo->prepare($inserir_dados);
             $stmt_inserir_dados->bindParam(':nome', $nome, PDO::PARAM_STR);
             $stmt_inserir_dados->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt_inserir_dados->bindParam(':senha', $senha, PDO::PARAM_STR);
+            $stmt_inserir_dados->bindParam(':senha', $senha_hash, PDO::PARAM_STR);
             $stmt_inserir_dados->bindParam(':nivel', $nivel, PDO::PARAM_STR);
             
-            if ($stmt->execute()) {
+            if ($stmt_inserir_dados->execute()) {
                 echo "Cadastro realizado com sucesso! <a href='../index.html'>Fazer login</a>";
             } else {
                 echo "Erro ao cadastrar usuário.";

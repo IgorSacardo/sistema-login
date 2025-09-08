@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="../style/style.css">
+</head>
+<body>
+    <div class="cadastro">
+        <h1>Crie sua conta!</h1>
+        <form class="inputs" action="../cadastro/phpcad.php" method="POST">
+            <label>Nome</label>
+            <input type="text" name="nome" placeholder="Nome e sobrenome" required>
+
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder="Seu melhor e-mail" required>
+            
+            <label>Senha</label>
+            <input type="password" name="senha" placeholder="Digite sua senha" required>
+            
+            <label>Confirme sua senha</label>
+            <input type="password" name="confirmar_senha" placeholder="Digite novamente a senha" required>
+            
+            <input type="hidden" name="nivel" value="usuario">
+            <!--Todos os usuários serão cadastrados por padrão
+            terá o nível 'usuario', feito por um campo oculto.-->
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <div class="links">
+            <a href="../index.html">Já tem conta? Faça login</a>
+        </div>
+    </div>
+</body>
+</html>

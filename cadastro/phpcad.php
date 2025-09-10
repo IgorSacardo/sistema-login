@@ -36,9 +36,21 @@
             $stmt_inserir_dados->bindParam(':nivel', $nivel, PDO::PARAM_STR);
             
             if ($stmt_inserir_dados->execute()) {
-                echo "Cadastro realizado com sucesso! <a href='../index.html'>Fazer login</a>";
+                
+                $novo_id_usuario = $pdo->lastInsertId();
+                
+                $_SESSION['usuario_id'] = $novo_id_usuario;
+                $_SESSION['usuario_nome'] = $nome;
+                $_SESSION['usuario_email'] = $email;
+                $_SESSION['usuario_nivel'] = $nivel;
+
+                header("Location: ../site.php");
+                exit;
+                
+                // echo "Cadastro realizado com sucesso! <a href='../index.html'>Fazer login</a>";
             } else {
-                echo "Erro ao cadastrar usuário.";
+                header("Location: cadastro.html");
+                exit;
             }
         } catch (PDOException $e) {
             echo "Erro no banco de dados: ".$e->getMessage();
@@ -48,3 +60,4 @@
         exit;
     }
 ?>
+

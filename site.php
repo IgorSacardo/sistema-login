@@ -60,6 +60,14 @@
                         <h3>Gerenciamento de Acesso</h3>
                         <p>O sistema suporta diferentes níveis de permissão, permitindo funcionalidades exclusivas para administradores e usuários padrão.</p>
                     </div>
+
+                    <?php if ($nivel_usuario === 'admin'): ?>
+                        <div class="card-info admin-card">
+                            <h3>Painel Administrativo</h3>
+                            <p>Gerir utilizadores, ver logs e configurar o sistema</p>
+                            <a href="admin_pag.php" class="admin-link">Aceder ao Painel</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>

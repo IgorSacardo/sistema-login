@@ -10,7 +10,6 @@
             die("Erro: Preencha todos os campos! <a href='index.html'>Tentar novamente</a>");
         }
 
-
         try {
             $sql = "SELECT usu_id, usu_nome, usu_email, usu_senha, usu_nivel_acesso FROM usuarios WHERE usu_email = :email LIMIT 1";
 
@@ -25,9 +24,14 @@
                 $_SESSION['usuario_nome'] = $usuario['usu_nome'];
                 $_SESSION['usuario_email'] = $usuario['usu_email'];
                 $_SESSION['usuario_nivel'] = $usuario['usu_nivel_acesso'];
-
-                header("Location: site.php");
-                exit;
+                
+                if ($_SESSION['usuario_nivel'] === 'admin') {
+                    header("Location: admin/admin_pag.php");
+                    exit;
+                } else {
+                    header("Location: site.php");
+                    exit;
+                }
             } else {
                 echo "E-mail ou senha inválidos! <a href='index.html'>Tentar novamente</a>";
             }

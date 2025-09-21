@@ -14,13 +14,26 @@
             die("As senhas não conferem! <a href='cadastro.html'>Tente novamente</a>.");
         }
 
+        if (strtolower($nome) === 'admin') {
+            die("Erro: Este nome de usuário é reservado. <a href='cadastro.html'>Tente outro</a>.");
+        }
+
         try {
             
+            $verificar_usuario_existe = "SELECT usu_id FROM usuarios WHERE usu_nome = :nome";
+            $stmt_verificar_nome = $pdo->prepare($verificar_usuario_existe);
+            $stmt_verificar_nome->bindParam(':nome', $nome, PDO::PARAM_STR);
+            $stmt_verificar_nome->execute();
+
+            if ($stmt_verificar_nome->rowCount() > 0) {
+                die("Este nome de usuário já está cadastrado! <a href='cadastro.html'>Tente outro</a>.");
+            }
+
             $verificar_email_existe = "SELECT usu_id FROM usuarios WHERE usu_email = :email";
             $stmt_verificar_email = $pdo->prepare($verificar_email_existe);
             $stmt_verificar_email->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt_verificar_email->execute(); 
-            
+
             if ($stmt_verificar_email->rowCount() > 0) {
                 die("E-mail já está cadastrado! <a href='cadastro.html'>Tente outro</a>.");
             }
@@ -46,11 +59,8 @@
 
                 header("Location: ../site.php");
                 exit;
-                
-                // echo "Cadastro realizado com sucesso! <a href='../index.html'>Fazer login</a>";
             } else {
-                header("Location: cadastro.html");
-                exit;
+                die("Ocorreu um erro ao realizar o cadastro. <a href='cadastro.html'>Tente novamente</a>.");
             }
         } catch (PDOException $e) {
             echo "Erro no banco de dados: ".$e->getMessage();
@@ -60,4 +70,3 @@
         exit;
     }
 ?>
-

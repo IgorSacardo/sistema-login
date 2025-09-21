@@ -23,7 +23,7 @@
         <nav class="info-usu">
             <div class="det-usu">
                 <span class="nome-usu">Olá, <?php echo $nome_usuario; ?>!</span>
-                <span class="nivel-usu">Nível: <?php echo $nivel_usuario; ?></span>
+                <span class="nivel-usu">Nível: <span style="color: #E7297E"><?php echo $nivel_usuario; ?></span></span>
             </div>
             <a href="logout.php" class="btn-sair">Sair</a>
         </nav>
@@ -65,7 +65,7 @@
                         <div class="card-info admin-card">
                             <h3>Painel Administrativo</h3>
                             <p>Gerir utilizadores, ver logs e configurar o sistema</p>
-                            <a href="admin_pag.php" class="admin-link">Aceder ao Painel</a>
+                            <a href="admin/admin_pag.php" class="admin-link">Aceder ao Painel</a>
                         </div>
                     <?php endif; ?>
                 </div>

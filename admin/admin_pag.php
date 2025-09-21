@@ -26,7 +26,8 @@ $nome_admin = htmlspecialchars($_SESSION['usuario_nome']);
         <div class="info-usu">
             <div class="det-usu">
                 <span class="nome-usu">Painel Admin</span>
-                <span class="nivel-usu">Nível: <?php echo $nome_admin; ?></span>
+                <span class="nome-usu">Olá, <?php echo $nome_admin; ?>!</span>
+                <span class="nivel-usu">Nível: <span style="color: #E7297E">Admin</span></span>
             </div>
             <div>
                 <a href="../logout.php" class="btn-sair">Sair</a>

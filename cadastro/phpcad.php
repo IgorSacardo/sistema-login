@@ -7,6 +7,7 @@
         $email = trim($_POST['email']);
         $senha = trim($_POST['senha']);
         $confirmar = trim($_POST['confirmar_senha']);
+        $palavra_chave = trim($_POST['palavra_chave']);
         $nivel = 'usuario';
         // $nivel = $_POST['nivel'];
         
@@ -39,13 +40,15 @@
             }
 
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+            $palavra_chave_hash = password_hash($palavra_chave, PASSWORD_DEFAULT);
 
-            $inserir_dados = "INSERT INTO usuarios (usu_nome, usu_email, usu_senha, usu_nivel_acesso) VALUES (:nome, :email, :senha, :nivel)";
+            $inserir_dados = "INSERT INTO usuarios (usu_nome, usu_email, usu_senha, palavra_chave, usu_nivel_acesso) VALUES (:nome, :email, :senha, :palavra_chave, :nivel)";
                     
             $stmt_inserir_dados = $pdo->prepare($inserir_dados);
             $stmt_inserir_dados->bindParam(':nome', $nome, PDO::PARAM_STR);
             $stmt_inserir_dados->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt_inserir_dados->bindParam(':senha', $senha_hash, PDO::PARAM_STR);
+            $stmt_inserir_dados->bindParam(':palavra_chave', $palavra_chave_hash, PDO::PARAM_STR);
             $stmt_inserir_dados->bindParam(':nivel', $nivel, PDO::PARAM_STR);
             
             if ($stmt_inserir_dados->execute()) {

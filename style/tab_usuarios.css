@@ -1,0 +1,54 @@
+.tabela-container {
+    margin-top: 60px;
+    overflow-x: auto;
+}
+
+.tabela-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabela-usuarios th,
+.tabela-usuarios td {
+    padding: 15px;
+    border-bottom: 1px solid #fff;
+}
+
+.tabela-usuarios th {
+    font-size: 14px;
+    font-weight: 700;
+    color: #AAA;
+    text-transform: uppercase;
+}
+
+.tabela-usuarios td {
+    font-size: 15px;
+    color: #EAEAEA;
+}
+
+.tabela-usuarios tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-usuarios .acoes {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-acao {
+    color: #fff;
+    padding: 10px 12px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.btn-editar {
+    color: #fff;
+}
+
+.btn-excluir {
+    color: #E7297E;
+}

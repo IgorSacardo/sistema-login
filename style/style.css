@@ -8,21 +8,22 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #121212; 
-    color: #EAEAEA; 
+    background-color: #121212;
+    color: #EAEAEA;
     line-height: 1.7;
     position: relative;
     overflow-x: hidden;
 }
 
 
-body::before, body::after {
+body::before,
+body::after {
     content: '';
     position: fixed;
     border-radius: 50%;
-    background-color: rgba(231, 41, 126, 0.1); 
+    background-color: rgba(231, 41, 126, 0.1);
     z-index: -1;
-    filter: blur(50px); 
+    filter: blur(50px);
 }
 
 body::before {
@@ -48,21 +49,21 @@ body::after {
 
 .login,
 .cadastro {
-    background: rgba(34, 34, 34, 0.8); 
+    background: rgba(34, 34, 34, 0.8);
     backdrop-filter: blur(10px);
     border: 1px solid #333;
     border-radius: 12px;
     padding: 40px 30px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
 .login h1,
 .cadastro h1 {
     font-size: 24px;
-    font-weight: 800; 
+    font-weight: 800;
     color: #FFF;
     margin-bottom: 30px;
 }
@@ -92,12 +93,12 @@ body::after {
 }
 
 .inputs input:focus {
-    border-color: #E7297E; 
+    border-color: #E7297E;
     box-shadow: 0 0 0 3px rgba(231, 41, 126, 0.2);
 }
 
 .inputs button {
-    background: linear-gradient(45deg, #E7297E, #A31D58); 
+    background: linear-gradient(45deg, #E7297E, #A31D58);
     color: #fff;
     border: none;
     padding: 12px;
@@ -275,7 +276,7 @@ body::after {
 .card-info:hover {
     transform: translateY(-5px);
     border-color: #E7297E;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .card-info h3 {
@@ -294,10 +295,12 @@ body::after {
         flex-direction: column;
         text-align: center;
     }
+
     .txt-apresentacao p {
         margin-left: auto;
         margin-right: auto;
     }
+
     .img-apresentacao {
         margin-top: 40px;
     }
@@ -307,6 +310,7 @@ body::after {
     .txt-apresentacao h1 {
         font-size: 40px;
     }
+
     .info-usu {
         flex-direction: column;
         gap: 15px;

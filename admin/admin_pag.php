@@ -45,16 +45,17 @@ $nome_admin = htmlspecialchars($_SESSION['usuario_nome']);
                 <div class="card-info">
                     <h3>Criar Novo Utilizador</h3>
                     <p>Registar uma nova conta de utilizador ou de administrador no sistema.</p>
-                    <a href="#" class="btn-principal" class="btn-principal" style="margin-top: 15px;">Acessar</a>
+                    <a href="criar_usuario.php" class="btn-principal" style="margin-top: 15px;">Acessar</a>
                 </div>
                 <div class="card-info">
                     <h3>Gerir Utilizadores</h3>
                     <p>Ver a lista completa de utilizadores, editar as suas permissões, redefinir senhas ou apagar contas.</p>
-                    <a href="gerenciar_usuarios.php" class="btn-principal" class="btn-principal" style="margin-top: 15px;">Acessar</a>
+                    <a href="gerenciar_usuarios.php" class="btn-principal" style="margin-top: 15px;">Acessar</a>
                 </div>
                  <div class="card-info">
                     <h3>Relatórios de Atividade</h3>
                     <p>Analisar os logs de acesso, registos recentes e outras métricas importantes do sistema.</p>
+                    <a href="#" class="btn-principal" style="margin-top: 15px;">Em breve</a>
                 </div>
             </div>
         </div>

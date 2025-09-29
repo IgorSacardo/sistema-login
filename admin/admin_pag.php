@@ -26,8 +26,6 @@ $nome_admin = htmlspecialchars($_SESSION['usuario_nome']);
         <div class="info-usu">
             <div class="det-usu">
                 <span class="nome-usu">Painel Admin</span>
-                <span class="nome-usu">Olá, <?php echo $nome_admin; ?>!</span>
-                <span class="nivel-usu">Nível: <span style="color: #E7297E">Admin</span></span>
             </div>
             <div>
                 <a href="../logout.php" class="btn-sair">Sair</a>
@@ -47,11 +45,12 @@ $nome_admin = htmlspecialchars($_SESSION['usuario_nome']);
                 <div class="card-info">
                     <h3>Criar Novo Utilizador</h3>
                     <p>Registar uma nova conta de utilizador ou de administrador no sistema.</p>
-                    <a href="#">Acessar</a>
+                    <a href="#" class="btn-principal" class="btn-principal" style="margin-top: 15px;">Acessar</a>
                 </div>
                 <div class="card-info">
                     <h3>Gerir Utilizadores</h3>
                     <p>Ver a lista completa de utilizadores, editar as suas permissões, redefinir senhas ou apagar contas.</p>
+                    <a href="gerenciar_usuarios.php" class="btn-principal" class="btn-principal" style="margin-top: 15px;">Acessar</a>
                 </div>
                  <div class="card-info">
                     <h3>Relatórios de Atividade</h3>

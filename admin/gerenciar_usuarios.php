@@ -70,9 +70,7 @@
                                 <td><?php echo htmlspecialchars($usuario['usu_nivel_acesso']); ?></td>
                                 <td class="acoes">
                                     <a data-id="<?php echo $usuario['usu_id']; ?>" class="btn-acao btn-editar">Editar</a>
-                                    <a href="excluir_usuario.php?id=<?php echo $usuario['usu_id']; ?>" class="btn-acao btn-excluir"
-                                        onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir
-                                    </a>
+                                    <a data-id="<?php echo $usuario['usu_id']; ?>" class="btn-acao btn-excluir">Excluir</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -111,90 +109,115 @@
             <div id="mensagem-edicao" style="margin-top: 15px; font-weight: bold;"></div>
         </div>
     </div>
+    <div id="modal-exclusao" class="modal">
+        <div class="modal-conteudo" style="max-width: 450px;">
+            <span class="botao-fechar">&times;</span>
+            <h1>Confirmar <span class="destaque">Exclusão</span></h1>
+            <p style="margin-bottom: 25px; color: #AAA;">Você tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.</p>
+            <div class="acoes-modal" style="display: flex; justify-content: flex-end; gap: 15px;">
+                <a id="botao-cancelar-exclusao" class="btn-principal" style="background: #555;">Cancelar</a>
+                <a id="botao-confirmar-exclusao" class="btn-principal">Sim, Excluir</a>
+            </div>
+        </div>
+    </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById('modal-edicao');
-        const botaoFechar = document.querySelector('.botao-fechar');
+        document.addEventListener('DOMContentLoaded', function() {
+        const modalEdicao = document.getElementById('modal-edicao');
+        const botaoFecharEdicao = modalEdicao.querySelector('.botao-fechar');
         const formEdicao = document.getElementById('form-edicao');
         const mensagemEdicao = document.getElementById('mensagem-edicao');
+        let linhaSendoEditada = null;
 
-        let linhaSendoEditada = null; // Armazena a linha <tr> da tabela
+        const modalExclusao = document.getElementById('modal-exclusao');
+        const botaoFecharExclusao = modalExclusao.querySelector('.botao-fechar');
+        const botaoCancelarExclusao = document.getElementById('botao-cancelar-exclusao');
+        const botaoConfirmarExclusao = document.getElementById('botao-confirmar-exclusao');
+        let idParaExcluir = null;
+        let linhaSendoExcluida = null;
 
-        const abrirModal = () => modal.classList.add('mostrar');
-        const fecharModal = () => {
-            modal.classList.remove('mostrar');
-            mensagemEdicao.textContent = ''; // Limpa mensagens
-        };
+        const abrirModal = (modal) => modal.classList.add('mostrar');
+        const fecharModal = (modal) => modal.classList.remove('mostrar');
 
-        // Adiciona um "escutador" de cliques na tabela
         document.querySelector('.tabela-usuarios tbody').addEventListener('click', async (evento) => {
-            // Verifica se o clique foi em um botão com a classe 'btn-editar'
-            if (evento.target.classList.contains('btn-editar')) {
-                const botao = evento.target;
-                const idUsuario = botao.dataset.id;
-                linhaSendoEditada = botao.closest('tr'); // Pega a linha <tr> mais próxima do botão
+            const botaoClicado = evento.target;
 
+            if (botaoClicado.classList.contains('btn-editar')) {
+                linhaSendoEditada = botaoClicado.closest('tr');
+                const idUsuario = botaoClicado.dataset.id;
                 try {
-                    // Busca os dados do usuário na nossa API
                     const resposta = await fetch(`api_usuario.php?id=${idUsuario}`);
                     const resultado = await resposta.json();
-
                     if (resultado.status === 'success') {
                         const dadosUsuario = resultado.data;
-                        // Preenche o formulário do modal com os dados retornados
                         document.getElementById('editar-id').value = dadosUsuario.usu_id;
                         document.getElementById('editar-nome').value = dadosUsuario.usu_nome;
                         document.getElementById('editar-email').value = dadosUsuario.usu_email;
                         document.getElementById('editar-nivel').value = dadosUsuario.usu_nivel_acesso;
-                        abrirModal();
-                    } else {
-                        alert('Erro ao buscar dados do usuário: ' + resultado.message);
-                    }
-                } catch (erro) {
-                    alert('Ocorreu um erro de rede. Tente novamente.');
-                }
+                        abrirModal(modalEdicao);
+                    } else { alert('Erro: ' + resultado.message); }
+                } catch (erro) { alert('Erro de rede ao buscar dados.'); }
+            }
+
+            if (botaoClicado.classList.contains('btn-excluir')) {
+                idParaExcluir = botaoClicado.dataset.id; 
+                linhaSendoExcluida = botaoClicado.closest('tr'); 
+                abrirModal(modalExclusao); 
             }
         });
 
-        // "Escutador" para quando o formulário de edição for enviado
         formEdicao.addEventListener('submit', async (evento) => {
-            evento.preventDefault(); // Impede o recarregamento da página
+            evento.preventDefault();
             const formData = new FormData(formEdicao);
             const dados = Object.fromEntries(formData.entries());
-
             try {
                 const resposta = await fetch('api_usuario.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dados) // Converte os dados para JSON
+                    body: JSON.stringify(dados)
                 });
                 const resultado = await resposta.json();
-
                 if (resultado.status === 'success') {
-                    // Se a atualização deu certo, atualiza a tabela na tela
                     if (linhaSendoEditada) {
                         linhaSendoEditada.cells[1].textContent = dados.nome;
                         linhaSendoEditada.cells[2].textContent = dados.email;
                         linhaSendoEditada.cells[3].textContent = dados.nivel;
                     }
-                    fecharModal();
+                    fecharModal(modalEdicao);
+                } else { mensagemEdicao.textContent = 'Erro: ' + resultado.message; }
+            } catch (erro) { mensagemEdicao.textContent = 'Erro de rede ao atualizar.'; }
+        });
+
+        botaoConfirmarExclusao.addEventListener('click', async () => {
+            if (!idParaExcluir) return;
+            try {
+                const resposta = await fetch('excluir_usuario.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: idParaExcluir })
+                });
+                const resultado = await resposta.json();
+
+                if (resultado.status === 'success') {
+                    if (linhaSendoExcluida) {
+                        linhaSendoExcluida.remove();
+                    }
+                    fecharModal(modalExclusao);
                 } else {
-                    mensagemEdicao.textContent = 'Erro: ' + resultado.message;
-                    mensagemEdicao.style.color = '#E7297E';
+                    alert('Erro ao excluir: ' + resultado.message);
+                    fecharModal(modalExclusao);
                 }
             } catch (erro) {
-                mensagemEdicao.textContent = 'Ocorreu um erro de rede. Tente novamente.';
-                mensagemEdicao.style.color = '#E7297E';
+                alert('Erro de rede ao tentar excluir.');
             }
         });
 
-        // Ações para fechar o modal
-        botaoFechar.addEventListener('click', fecharModal);
+        botaoFecharEdicao.addEventListener('click', () => fecharModal(modalEdicao));
+        botaoFecharExclusao.addEventListener('click', () => fecharModal(modalExclusao));
+        botaoCancelarExclusao.addEventListener('click', () => fecharModal(modalExclusao));
         window.addEventListener('click', (evento) => {
-            if (evento.target === modal) {
-                fecharModal();
-            }
+            if (evento.target === modalEdicao) fecharModal(modalEdicao);
+            if (evento.target === modalExclusao) fecharModal(modalExclusao);
         });
     });
     </script>

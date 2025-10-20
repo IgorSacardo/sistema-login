@@ -2,24 +2,29 @@
 session_start();
 require_once '../conexao/conexao.php';
 
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../index.html");
-    exit;
-}
+header('Content-Type: application/json');
 
 if ($_SESSION['usuario_nivel'] != 'admin') {
-    die("Acesso negado.");
-}
-
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header("Location: gerenciar_usuarios.php");
+    echo json_encode(['status' => 'error', 'message' => 'Acesso negado.']);
     exit;
 }
 
-$id_para_excluir = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['status' => 'error', 'message' => 'Método não permitido.']);
+    exit;
+}
+
+$dados = json_decode(file_get_contents('php://input'), true);
+$id_para_excluir = $dados['id'] ?? null;
+
+if (empty($id_para_excluir)) {
+    echo json_encode(['status' => 'error', 'message' => 'ID não fornecido.']);
+    exit;
+}
 
 if ($id_para_excluir == $_SESSION['usuario_id']) {
-    die("Erro ao excluir usuário. <a href='gerenciar_usuarios.php'>Voltar</a>");
+    echo json_encode(['status' => 'error', 'message' => 'Você não pode excluir seu próprio usuário.']);
+    exit;
 }
 
 try {
@@ -28,13 +33,11 @@ try {
     $stmt->bindParam(':id', $id_para_excluir, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        header("Location: gerenciar_usuarios.php");
-        exit;
+        echo json_encode(['status' => 'success', 'message' => 'Usuário excluído com sucesso.']);
     } else {
-        die("Erro ao excluir usuário. <a href'gerenciar_usuarios.php'>Voltar</a>");
+        echo json_encode(['status' => 'error', 'message' => 'Falha ao excluir o usuário.']);
     }
 } catch (PDOException $e) {
-    die("Erro no banco de dados: " . $e->getMessage());
+    echo json_encode(['status' => 'error', 'message' => 'Erro no banco de dados: ' . $e->getMessage()]);
 }
-
 ?>

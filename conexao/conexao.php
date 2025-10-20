@@ -3,7 +3,7 @@ $servername="localhost";
 $port="3306";
 $username="root";
 $password="";
-$dbname="fafram";
+$dbname="login-system";
 try {
     $pdo = new PDO(
         "mysql:host=$servername;port=$port;dbname=$dbname;charset=utf8mb4",

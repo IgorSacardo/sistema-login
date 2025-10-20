@@ -31,7 +31,7 @@ try {
         header("Location: gerenciar_usuarios.php");
         exit;
     } else {
-        die("ERRo ao excluir usuário. <a href'gerenciar_usuarios.php'>Voltar</a>");
+        die("Erro ao excluir usuário. <a href'gerenciar_usuarios.php'>Voltar</a>");
     }
 } catch (PDOException $e) {
     die("Erro no banco de dados: " . $e->getMessage());
